@@ -13,19 +13,11 @@ public class ScriptLauncher {
 
   public static void main (String args[]) {
     // Load our arguments
-    String policy = "";
-    int port = 1234;
+    int port = 3010;
 
     try {
-      // Load the policy XML
-      File policyFile = new File(args[0]);
-      Scanner policyScanner = new Scanner(policyFile);
-
-      while(policyScanner.hasNextLine())
-        policy += policyScanner.nextLine() + "\n";
-
-      // Save the port
-      port = Integer.parseInt(args[1]);
+      if (args.length > 0)
+        port = Integer.parseInt(args[0]);
     } catch (Exception e){
       printUsage();
       System.exit(1);
@@ -35,9 +27,10 @@ public class ScriptLauncher {
     ServerSocket serverSocket = null;
     try {
       serverSocket = new ServerSocket(port);
-      System.out.println("Server listening on port: " + port);
+      System.out.println("Script launcher listening on port: " + port);
     } catch (IOException e) {
-      System.err.println("Could not listen on port: " + port);
+      System.err.println("Script launcher could not listen on port: " + port);
+      e.printStackTrace();
       System.exit(1);
     }
 
@@ -46,17 +39,18 @@ public class ScriptLauncher {
       Socket clientSocket = null;
       try {
         clientSocket = serverSocket.accept();
-        System.out.println("Connection accepted, sending XML...");
+        System.out.println("Connection accepted, spawning script thread...");
       } catch (IOException e) {
-        System.out.println("Accept failed: " + port);
+        System.out.println("Connection accept failed: " + port);
+        e.printStackTrace();
       }
 
-      ScriptLauncherThread thread = new ScriptLauncherThread(clientSocket, policy);
+      ScriptLauncherThread thread = new ScriptLauncherThread(clientSocket);
       thread.run();
     }
   }
 
   private static void printUsage(){
-    System.out.println("Usage: policyserver <flashpolicy.xml> <port>");
+    System.out.println("Usage: ScriptLauncher <port>");
   }
 }
