@@ -1,0 +1,42 @@
+<project name="ScriptLauncher" basedir="." default="jar">
+
+  <property name="src.dir"     value="src" />
+
+  <property name="build.dir"   value="build" />
+  <property name="classes.dir" value="${build.dir}/classes" />
+  <property name="jar.dir"     value="${build.dir}/jar" />
+  
+  <property name="config.dir"     value="config" />
+
+  <property name="main-class"  value="net.progeny.uswdss.chci.utility.ScriptLauncher" />
+
+  <target name="clean">
+    <delete dir="${jar.dir}" />
+  </target>
+
+  <target name="realclean">
+    <delete dir="${build.dir}" />
+  </target>
+
+  <target name="build" depends="realclean">
+    <mkdir dir="${classes.dir}" />
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" />
+  </target>
+
+  <target name="jar" depends="build">
+    <mkdir dir="${jar.dir}" />
+    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="jar">
+    <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
+      <arg value="${config.dir}/flashpolicy.xml" />
+      <arg value="1234" />
+    </java>
+  </target>
+
+</project>
