@@ -1,4 +1,4 @@
-package net.progeny.uswdss.chci.utility;
+package net.progeny.uswdss.utility;
 
 import java.net.ServerSocket;
 import java.net.Socket;

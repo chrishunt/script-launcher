@@ -8,7 +8,7 @@
   
   <property name="config.dir"     value="config" />
 
-  <property name="main-class"  value="net.progeny.uswdss.chci.utility.ScriptLauncher" />
+  <property name="main-class"  value="net.progeny.uswdss.utility.ScriptLauncher" />
 
   <target name="clean">
     <delete dir="${jar.dir}" />
